@@ -15,6 +15,7 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/api/book")
+@CrossOrigin(origins = "*")
 public class BookController {
     @Autowired
     private BookService bookService;
@@ -62,8 +63,14 @@ public class BookController {
         Map<String, Object> map = new HashMap<String, Object>();
         try{
             Book currentPerson = bookService.findById(id);
-
+            return null;
         }catch (Exception e){map.put("message", e.getMessage());
             return new ResponseEntity<>( map, HttpStatus.INTERNAL_SERVER_ERROR);}
+    }
+
+    @PostMapping(value = "/")
+    public ResponseEntity<Object>save(@RequestBody Book book){
+        Book booksave = bookService.save(book);
+        return new ResponseEntity(booksave, HttpStatus.CREATED);
     }
 }
