@@ -44,7 +44,7 @@ public class BookController {
     }
 
     @GetMapping(value = "/bookByFechas/{data1}&{data2}")
-    public ResponseEntity<Object> getByFechas(@PathVariable@DateTimeFormat(pattern = "yyyy-MM-dd") Date data1,@PathVariable@DateTimeFormat(pattern = "yyy-MM-dd") Date data2){
+    public ResponseEntity<Object> getByfechas(@PathVariable@DateTimeFormat(pattern = "yyyy-MM-dd") Date data1,@PathVariable@DateTimeFormat(pattern = "yyy-MM-dd") Date data2){
         Map<String,Object> map = new HashMap<>();
         try {
             List<Book> list = bookService.findByFechas(data1,data2);
@@ -68,7 +68,7 @@ public class BookController {
     }
 
     @GetMapping(value = "/bookByFecha/{data}")
-    public ResponseEntity<Object> getByFecha(@PathVariable@DateTimeFormat(pattern = "yyyy-MM-dd") Date data){
+    public ResponseEntity<Object> getByfecha(@PathVariable@DateTimeFormat(pattern = "yyyy-MM-dd") Date data){
         Map<String,Object> map = new HashMap<>();
         try {
             List<Book> list = bookService.findByFecha(data);
