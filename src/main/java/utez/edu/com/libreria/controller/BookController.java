@@ -1,15 +1,14 @@
 package utez.edu.com.libreria.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utez.edu.com.libreria.entity.Book;
 import utez.edu.com.libreria.services.BookService;
 
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 import java.util.HashMap;
 
@@ -20,7 +19,7 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
-    @GetMapping(value = "/books")
+    @GetMapping(value = "/")
     public ResponseEntity<Object> get(){
         Map<String,Object> map=new HashMap<String,Object>();
         try{
@@ -32,7 +31,55 @@ public class BookController {
         }
     }
 
-    @GetMapping(value = "/book/{id}")
+    @GetMapping(value = "/bookByGenero/{data}")
+    public ResponseEntity<Object> getByGenero(@PathVariable String data){
+        Map<String,Object> map = new HashMap<>();
+        try {
+            List<Book> list = bookService.frinByGenero(data);
+            return new ResponseEntity<Object>(list,HttpStatus.OK);
+        }catch (Exception e){
+            map.put("message: ",e.getMessage());
+            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/bookByFechas/{data1}&{data2}")
+    public ResponseEntity<Object> getByFechas(@PathVariable@DateTimeFormat(pattern = "yyyy-MM-dd") Date data1,@PathVariable@DateTimeFormat(pattern = "yyy-MM-dd") Date data2){
+        Map<String,Object> map = new HashMap<>();
+        try {
+            List<Book> list = bookService.findByFechas(data1,data2);
+            return new ResponseEntity<Object>(list,HttpStatus.OK);
+        }catch (Exception e){
+            map.put("message: ",e.getMessage());
+            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/bookBynameOrautor/{data}")
+    public ResponseEntity<Object> getByNombreOrautor(@PathVariable String data){
+        Map<String,Object> map = new HashMap<>();
+        try {
+            List<Book> list = bookService.findByNombreOrAutor(data);
+            return new ResponseEntity<Object>(list,HttpStatus.OK);
+        }catch (Exception e){
+            map.put("message: ",e.getMessage());
+            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/bookByFecha/{data}")
+    public ResponseEntity<Object> getByFecha(@PathVariable@DateTimeFormat(pattern = "yyyy-MM-dd") Date data){
+        Map<String,Object> map = new HashMap<>();
+        try {
+            List<Book> list = bookService.findByFecha(data);
+            return new ResponseEntity<Object>(list,HttpStatus.OK);
+        }catch (Exception e){
+            map.put("message: ",e.getMessage());
+            return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Object> getById(@PathVariable Long id){
         try{
             Book book  = bookService.findById(id);
@@ -73,4 +120,6 @@ public class BookController {
         Book booksave = bookService.save(book);
         return new ResponseEntity(booksave, HttpStatus.CREATED);
     }
+
+
 }

@@ -1,4 +1,5 @@
 package utez.edu.com.libreria.services;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,5 +34,25 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void delete(Book book){
         bookDao.delete(book);
+    }
+
+    @Override
+    public List<Book> findByNombreOrAutor(String data) {
+        return bookDao.findBookByAutorOrNombrebook(data);
+    }
+
+    @Override
+    public List<Book> frinByGenero(String data) {
+        return bookDao.findBookByGenero(data);
+    }
+
+    @Override
+    public List<Book> findByFechas(Date data1, Date data2) {
+        return bookDao.findBookByFechaBetween(data1,data2);
+    }
+
+    @Override
+    public List<Book> findByFecha(Date data) {
+        return bookDao.findBookByFecha(data);
     }
 }
